@@ -148,8 +148,8 @@ export default function Court() {
           </PDFViewer>
         ) : (
 
-          <div className="xl:grid w-full flex-1 xl:grid-cols-3 xl:grid-rows-2 h-[vh] transition duration-300  ">
-            <button className="xl:hidden flex bg-[#ccc] p-1 absolute top-0 right-0 m-5 rounded-lg items-center cursor-pointer  transition duration-300 transform hover:scale-110"
+          <div className="xl:grid w-full flex-1 xl:grid-cols-3 xl:grid-rows-2  transition duration-300  ">
+            <button className="xl:hidden flex bg-[#ccc] p-1 absolute top-0 right-2 m-5 rounded-lg items-center cursor-pointer  transition duration-300 transform hover:scale-110"
             onClick={() => setIsOpenMenu(!isOpenMenu)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ export default function Court() {
             {/*gridTemplateAreas: " 'productSold productSold summary' 'productNotSold productNotSold summary'*/}
             */
             {/* Primer div */}
-            <div className="flex text-black px-3 xl:col-span-2 col-span-3 col-start-1 row-start-1 h-[20vh] ">
+            <div className="flex text-black px-3 xl:col-span-2 col-span-3 col-start-1 row-start-1 ">
               <table className="h-full w-full border-collapse">
                 <thead>
                   <tr className='bg-[#ccc] rounded-full grid grid-cols-3 py-2.5'>
@@ -183,7 +183,7 @@ export default function Court() {
                   {currentCourt.productosVendidos.map((product, index) => (
                     <tr
                       key={index}
-                      className='grid grid-cols-3 py-2.5 text-center'>
+                      className='grid grid-cols-3 py-1 text-center'>
                       <td>{product.nombre}</td>
                       <td>{product.cantidad}</td>
                       <td>{product.precio}</td>
@@ -195,7 +195,7 @@ export default function Court() {
             </div>
             {/* Tercer div */}
 
-            <div className="flex text-black px-3 xl:col-span-2 col-span-3 row-start-2 h-[20vh]">
+            <div className="flex text-black px-3 xl:col-span-2 col-span-3 row-start-2">
               <table className="h-full w-full border-collapse">
 
                 <thead>
@@ -209,7 +209,7 @@ export default function Court() {
                   {currentCourt.productosNoVendidos.map((product, index) => (
                     <tr
                       key={index}
-                      className='grid grid-cols-3 py-2.5 text-center'>
+                      className='grid grid-cols-3 py-1 text-center'>
                       <td>{product.nombre}</td>
                       <td>{product.cantidad}</td>
                       <td>{product.precio}</td>
