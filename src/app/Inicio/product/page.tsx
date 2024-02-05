@@ -8,6 +8,7 @@ import {
 } from "@/utils/api";
 import React, { useEffect, useRef, useState, FormEvent } from "react";
 import { ButtonCrud } from "@/components/buttons/ButtonCrud";
+import Paginator from "@/components/paginator/Paginator";
 
 export default function Product() {
   const [dataProductList, setDataProductList] = useState<null | RootProduct>(
@@ -20,6 +21,12 @@ export default function Product() {
     false,
     "insert",
   ]);
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+
+  const itemsPerPage = 3; // Puedes ajustar este valor según tus necesidades
+
   const formRef = useRef<null | HTMLFormElement>(null);
 
   const input_nombre = useRef<HTMLInputElement>(null);
@@ -81,10 +88,20 @@ export default function Product() {
     });
   };
 
-
   useEffect(() => {
     updateTable();
   }, []);
+
+ 
+    const offset = currentPage * itemsPerPage;
+    const currentItems = dataProductList?.message.slice(currentPage, offset + itemsPerPage) || [];
+    const pageCount = (Math.ceil(
+      (dataProductList?.message.length || 0) / itemsPerPage
+    ));
+
+
+  // ...
+
   useEffect(() => {
     if (viewAddProduct[1] == "edit" && viewAddProduct != null) {
       input_nombre.current &&
@@ -114,6 +131,11 @@ export default function Product() {
     );
   };
 
+  const handlePageClick = (selectedPage: number) =>{
+    console.log(selectedPage)
+    setCurrentPage(selectedPage);
+  }
+  
   return (
     <>
       <div className="h-[100%]">
@@ -216,30 +238,54 @@ export default function Product() {
           </div>
           {
             // @ts-ignore
-            dataProductList &&
-              dataProductList?.message.map(
-                (data: MessageProduct, index: number) => (
-                  <div
-                    onClick={() =>
-                      setClickInProduct(clickInProduct != null ? null : data)
+            currentItems &&
+              currentItems?.map((data: MessageProduct, index: number) => (
+                <div
+                  onClick={() =>
+                    setClickInProduct(clickInProduct != null ? null : data)
+                  }
+                  className={`bg-[linear-gradient(225deg,_#a1c4fd_10%,_#c2e9fb_90%)] 
+                    relative my-2 justify-center  py-6 md:py-2 justify-content rounded-xl flex flex-col px-5 gap-1 font-semibold hover:bg-slate-200 cursor-pointer ${
+                      clickInProduct?._id == data._id
+                        ? "bg-[linear-gradient(225deg,_#acfca2_10%,_#c0faea_90%)]"
+                        : " md:bg-none"
                     }
-                    className={`bg-[linear-gradient(225deg,_#a1c4fd_10%,_#c2e9fb_90%)] 
-                    relative my-2 justify-center  py-6 md:py-2 justify-content rounded-xl flex flex-col px-5 gap-1 font-semibold hover:bg-slate-200 cursor-pointer ${clickInProduct?._id == data._id ? "bg-[linear-gradient(225deg,_#acfca2_10%,_#c0faea_90%)]" : " md:bg-none"}
-                    md:grid  justify-items-center md:rounded-full overflow-hidden text-center`} 
-                    style={{ gridTemplateColumns: "50px 1fr 1fr 1fr" }}
-                    key={index}
-                  >
-                    <td className=" mt-5 md:m-0 flex gap-1 "><span className="md:hidden font-black">ID:</span>{index}</td>
-                    <td className="flex gap-1"> <span className="md:hidden font-black">Nombre:</span>{data.productName}</td>
-                    <td className="flex gap-1 "> <span className="md:hidden font-black">Descripción:</span>{data.productDescription}</td>
-                    <td className="flex gap-1 "> <span className="md:hidden font-black">Precio: $</span>{data.productPrice}</td>
-                    <td className="md:hidden text-center flex absolute   md:static top-0 w-full"><p className="w-full uppercase text-2xl mt-2 font-bold md:font-normal">producto</p></td>
-                    
-                  </div>
-                )
-              )
-  
+                    md:grid  justify-items-center md:rounded-full overflow-hidden text-center`}
+                  style={{ gridTemplateColumns: "50px 1fr 1fr 1fr" }}
+                  key={index}
+                >
+                  <td className=" mt-5 md:m-0 flex gap-1 ">
+                    <span className="md:hidden font-black">ID:</span>
+                    {index}
+                  </td>
+                  <td className="flex gap-1">
+                    {" "}
+                    <span className="md:hidden font-black">Nombre:</span>
+                    {data.productName}
+                  </td>
+                  <td className="flex gap-1 ">
+                    {" "}
+                    <span className="md:hidden font-black">Descripción:</span>
+                    {data.productDescription}
+                  </td>
+                  <td className="flex gap-1 ">
+                    {" "}
+                    <span className="md:hidden font-black">Precio: $</span>
+                    {data.productPrice}
+                  </td>
+                  <td className="md:hidden text-center flex absolute   md:static top-0 w-full">
+                    <p className="w-full uppercase text-2xl mt-2 font-bold md:font-normal">
+                      producto
+                    </p>
+                  </td>
+                </div>
+              ))
           }
+          <Paginator
+            currentPage={currentPage}
+            totalPages={pageCount}
+            onPageChange={handlePageClick}
+          />
         </div>
         <div
           className={`bg-[#1d1b1b6e] absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center ${
