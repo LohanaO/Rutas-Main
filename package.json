@@ -22,6 +22,7 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-paginate": "^8.2.0",
     "react-router-dom": "^5.3.4",
     "sweetalert2": "^11.10.2"
   },
